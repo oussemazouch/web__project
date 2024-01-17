@@ -1,11 +1,13 @@
 import {Entity , Column, PrimaryGeneratedColumn} from 'typeorm';
 import { ProductType } from '../enums/product-type.enum';
+import { baseEntity } from 'src/common/base.entity';
+
 
 
 @Entity({
     name:'product'
 })
-export class Product {
+export class Product extends baseEntity{
     @PrimaryGeneratedColumn()
     id: number;
 

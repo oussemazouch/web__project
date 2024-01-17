@@ -8,6 +8,8 @@ import { ModelsModule } from './models/models.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './models/user/entities/user.entity';
 import { CrudService } from './common/crud.service';
+import { Product } from './models/product/entities/product.entity';
+
 
 
 @Module({
@@ -22,11 +24,12 @@ import { CrudService } from './common/crud.service';
 			username: process.env.DB_USERNAME,
 			password: process.env.DB_PASSWORD,
 			database: process.env.DB_NAME,
-			entities: [User],
+			entities: [User,Product],
 			synchronize: true,
 			logging: true,
 		}),
-		ModelsModule,],
+		ModelsModule,
+		],
   controllers: [AppController],
   providers: [AppService],
 })
