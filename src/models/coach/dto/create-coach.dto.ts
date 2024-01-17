@@ -1,6 +1,7 @@
-import { IsNotEmpty } from '@nestjs/class-validator';
+import { IsNotEmpty } from 'class-validator';
+import { CreateUserDto } from '../../user/dto/create-user.dto';
 
-export class CreateCoachDto {
+export class CreateCoachDto extends CreateUserDto {
   @IsNotEmpty()
   ProgramPrice: number;
 
