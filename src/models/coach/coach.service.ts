@@ -1,26 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import { CreateCoachDto } from './dto/create-coach.dto';
 import { UpdateCoachDto } from './dto/update-coach.dto';
+import { CrudService } from '../../common/crud.service';
+import { Coach } from './entities/coach.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
-export class CoachService {
-  create(createCoachDto: CreateCoachDto) {
-    return 'This action adds a new coach';
-  }
-
-  findAll() {
-    return `This action returns all coach`;
-  }
-
-  findOne(id: number) {
-    return `This action returns a #${id} coach`;
-  }
-
-  update(id: number, updateCoachDto: UpdateCoachDto) {
-    return `This action updates a #${id} coach`;
-  }
-
-  remove(id: number) {
-    return `This action removes a #${id} coach`;
+export class CoachService extends CrudService<Coach> {
+  constructor(
+    @InjectRepository(Coach)
+    private CoachRepository: Repository<Coach>,
+  ) {
+    super(CoachRepository);
   }
 }
