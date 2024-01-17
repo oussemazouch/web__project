@@ -25,6 +25,7 @@ export class Product extends baseEntity{
 
     @Column({type: 'enum', enum: ProductType})
     productType: ProductType
+    
 }
 export { ProductType };
 
