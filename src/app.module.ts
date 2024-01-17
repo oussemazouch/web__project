@@ -7,15 +7,14 @@ import { ConfigModule } from '@nestjs/config';
 import { ModelsModule } from './models/models.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './models/user/entities/user.entity';
+import { CrudService } from './common/crud.service';
 
 
 @Module({
   imports: [CommonModule,
     ConfigModule.forRoot(
 		{isGlobal:true}
-	),
-     ModelsModule,
-	 
+	), 
      TypeOrmModule.forRoot({
 			type: "mysql",
 			host: process.env.DB_HOST,
@@ -26,7 +25,8 @@ import { User } from './models/user/entities/user.entity';
 			entities: [User],
 			synchronize: true,
 			logging: true,
-		}),],
+		}),
+		ModelsModule,],
   controllers: [AppController],
   providers: [AppService],
 })

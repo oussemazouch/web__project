@@ -1,4 +1,4 @@
-import { Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name:'user'
@@ -6,4 +6,6 @@ import { Entity, PrimaryGeneratedColumn } from "typeorm";
 export class User {
     @PrimaryGeneratedColumn()
     id:number;
+    @Column()
+    name:string;
 }
