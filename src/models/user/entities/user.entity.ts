@@ -8,4 +8,18 @@ export class User {
     id:number;
     @Column()
     name:string;
+    @Column()
+    lastName:string;
+    @Column()
+    age:number;
+    @Column()
+    phoneNumber:number;
+    @Column()
+    email:string;
+    @Column()
+    address:string;
+    @Column()
+    password:string;
+    @Column()
+    solde:number;
 }
