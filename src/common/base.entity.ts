@@ -1,5 +1,10 @@
-import { CreateDateColumn, DeleteDateColumn, UpdateDateColumn } from 'typeorm';
+import { BeforeInsert, Column, CreateDateColumn, DeleteDateColumn, Generated, UpdateDateColumn } from 'typeorm';
+import { v4 as uuidv4 } from 'uuid';
 export class baseEntity {
+
+  @Generated("uuid")
+  @Column()
+  uuid:string;
   @CreateDateColumn({
     update: false,
   })
@@ -14,4 +19,6 @@ export class baseEntity {
     update: false,
   })
   deletedAt: Date;
+
+  
 }
