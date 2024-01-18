@@ -9,6 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './models/user/entities/user.entity';
 import { CrudService } from './common/crud.service';
 import { Product } from './models/product/entities/product.entity';
+import { Cart } from './models/cart/entities/cart.entity';
 
 
 
@@ -24,7 +25,7 @@ import { Product } from './models/product/entities/product.entity';
 			username: process.env.DB_USERNAME,
 			password: process.env.DB_PASSWORD,
 			database: process.env.DB_NAME,
-			entities: [User,Product],
+			entities: [User,Product,Cart],
 			synchronize: true,
 			logging: true,
 		}),

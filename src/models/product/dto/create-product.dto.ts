@@ -2,8 +2,9 @@
 
 import { IsEnum, IsNotEmpty, IsNumber, IsString, MaxLength, MinLength } from 'class-validator';
 import { ProductType } from '../entities/product.entity';
+import { baseEntity } from 'src/common/base.entity';
 
-export class CreateProductDto {
+export class CreateProductDto extends baseEntity {
   @IsNotEmpty()
   @IsString()
   @MinLength(6, { message: "Le nom doit avoir au moins 6 caractères" })

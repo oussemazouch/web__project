@@ -1,5 +1,6 @@
 import { baseEntity } from "src/common/base.entity";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Cart } from "src/models/cart/entities/cart.entity";
+import { Column, Entity, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity({
     name:'user'
@@ -23,4 +24,6 @@ export class User extends baseEntity {
     password:string;
     @Column()
     solde:number;
+    @OneToOne(() => Cart, cart => cart.user)
+    cart: Cart;
 }
