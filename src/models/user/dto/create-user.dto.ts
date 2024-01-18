@@ -24,4 +24,5 @@ export class CreateUserDto {
     @IsNumber()
     @Min(0)
     solde:number;
+
 }
