@@ -1,5 +1,6 @@
 import { baseEntity } from 'src/common/base.entity';
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Role } from 'src/common/role.enum';
+import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'user',
@@ -21,12 +22,22 @@ export class User extends baseEntity {
   email: string;
   @Column()
   address: string;
-  @Column({
-    unique: true,
-  })
+  @Column()
   password: string;
   @Column()
   solde: number;
   @Column()
   salt: string;
+  @Column({type: 'enum',enum:Role})
+  role:Role;
+
+  @BeforeInsert()
+  setDefaultRole() {
+    //for testing created users are set to automatically admin
+    if (!this.role) {
+      this.role = Role.ADMIN;
+      // this.role = Role.USER;
+    }
+  }
+
 }

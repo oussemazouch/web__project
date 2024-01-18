@@ -32,7 +32,7 @@ export class UserService extends CrudService<User> {
     try {
       await this.create(user);
     } catch (e) {
-      throw new ConflictException('mot de passe et email doivent être uniques');
+      throw new ConflictException('Email address should be unique');
     }
     return {
       id: user.id,
@@ -54,11 +54,10 @@ export class UserService extends CrudService<User> {
       const payload = {
         email: user.email,
         name: user.name,
+        role:user.role
       };
-      console.log(payload);
+
       const token = this.jwtService.sign(payload);
-      console.log(token);
-      console.log(this.jwtService.sign(payload));
       return {
         access_token: token,
         message: 'successfully logged !',
