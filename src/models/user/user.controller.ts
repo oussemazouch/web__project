@@ -1,20 +1,46 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Patch,
+  Param,
+  Delete,
+  UseGuards,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto';
+import { LoginCredentialsDto } from './dto/login-credentials.dto';
+import { JwtAuthGuard } from './Guards/jwt-auth.guard';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  // hedhi post fibeli tetnahha khir deja register tnajem tawadhha
+  // @Post()
+  // create(@Body() createUserDto: CreateUserDto) {
+  //   return this.userService.create(createUserDto);
+  // }
+
+  @Post('register')
+  subscribe(@Body() createUserDto: CreateUserDto) {
+    return this.userService.register(createUserDto);
+  }
+  @Post('login')
+  login(@Body() credentials: LoginCredentialsDto) {
+    return this.userService.login(credentials);
   }
 
   @Get()
   findAll() {
     return this.userService.findAll();
+  }
+  @Get('TestingToken')
+  @UseGuards(JwtAuthGuard)
+  test() {
+    return this.userService.token_authorization_testing();
   }
 
   @Get(':id')
