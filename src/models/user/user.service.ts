@@ -4,14 +4,14 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { CrudService } from 'src/common/crud.service';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { LoginCredentialsDto } from './dto/login-credentials.dto';
+
 import { JwtService } from '@nestjs/jwt';
+import { LoginCredentialsDto } from './dto/login-credentials.dto';
 
 @Injectable()
 export class UserService extends CrudService<User> {
@@ -21,6 +21,10 @@ export class UserService extends CrudService<User> {
     private jwtService: JwtService,
   ) {
     super(userRepository);
+  }
+  async findByEmail(email:string)
+  {
+    return await this.userRepository.findOneBy({email:email});
   }
 
   async register(userData: CreateUserDto) {

@@ -24,5 +24,6 @@ dotenv.config();
       },
     }),
   ],
+  exports:[UserService]
 })
 export class UserModule {}

@@ -1,6 +1,7 @@
 import { baseEntity } from 'src/common/base.entity';
 import { Role } from 'src/common/role.enum';
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Order } from 'src/models/order/entities/order.entity';
+import { BeforeInsert, Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({
   name: 'user',
@@ -30,6 +31,8 @@ export class User extends baseEntity {
   salt: string;
   @Column({type: 'enum',enum:Role})
   role:Role;
+  @OneToMany(()=>Order,'user')
+  orders:Order[];
 
   @BeforeInsert()
   setDefaultRole() {
