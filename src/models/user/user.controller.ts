@@ -7,6 +7,10 @@ import {
   Param,
   Delete,
   UseGuards,
+  UseInterceptors,
+  UploadedFile,
+  Request,
+  Res,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -16,6 +20,29 @@ import { JwtAuthGuard } from './Guards/jwt-auth.guard';
 import { RolesGuard } from 'src/guards/roles/roles.guard';
 import { Roles } from 'src/common/docrators/roles.decorator';
 import { Role } from 'src/common/role.enum';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { Observable, from, map, of, tap } from 'rxjs';
+import { diskStorage } from 'multer';
+import path = require('path');
+import {v4 as uuidv4} from 'uuid';
+import { User } from './entities/user.entity';
+import { join } from 'path';
+
+//variable for the storage of file uploaded
+export const storage = {
+  
+    storage: diskStorage({
+      destination: './uploads/userImages',
+      filename: (req, file, cb) => {
+        const fileName:string = path.parse(file.originalname).name.replace(/\s/g, '') + uuidv4();
+        const extension: string = path.parse(file.originalname).ext;
+        cb(null, `${fileName}${extension}`)
+      }
+    })
+  
+}
+
+
 
 @Controller('user')
 export class UserController {
@@ -72,4 +99,22 @@ export class UserController {
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
   }
+
+  // upload photo to user
+  @UseGuards(JwtAuthGuard)
+  @Post('upload')
+  @UseInterceptors(FileInterceptor('file',storage))
+  uploadFile(@UploadedFile() file,@Request() req):Observable<Object> {
+    const user : User = req.user;
+
+    return from(this.userService.update(user.id,{image:file.filename})).pipe(
+      tap((user:User)=>console.log(user)),
+      map((user:User)=>({image:user.image}))
+    )
+  }
+
+  @Get('profile-image/:imagename')
+    findProfileImage(@Param('imagename') imagename, @Res() res): Observable<Object> {
+        return of(res.sendFile(join(process.cwd(), 'uploads/userImages/' + imagename)));
+    }
 }

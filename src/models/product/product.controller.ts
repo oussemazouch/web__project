@@ -6,6 +6,7 @@ import { Product } from './entities/product.entity';
 import { Page } from 'src/common/dtos/page.dto';
 import { Pagination } from 'nestjs-typeorm-paginate';
 
+
 @Controller('product')
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
@@ -54,7 +55,7 @@ export class ProductController {
     await this.productService.remove(id);
     return;
   }
-  // #endregion
+  
 
   
 }
