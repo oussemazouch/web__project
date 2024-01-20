@@ -9,6 +9,8 @@ import { User } from './models/user/entities/user.entity';
 import { Product } from './models/product/entities/product.entity';
 import { Coach } from './models/coach/entities/coach.entity';
 import { Order } from './models/order/entities/order.entity';
+import {Exercice} from "./models/exercice/entities/exercice.entity";
+import {TrainingProgram} from "./models/training_program/entities/training_program.entity";
 
 @Module({
   imports: [
@@ -21,7 +23,7 @@ import { Order } from './models/order/entities/order.entity';
       username: process.env.DB_USERNAME,
       password: process.env.DB_PASSWORD,
       database: process.env.DB_NAME,
-      entities: [User, Product, Coach,Order],
+      entities: [User, Product, Coach,Order,Exercice,TrainingProgram],
       synchronize: true,
       logging: true,
     }),

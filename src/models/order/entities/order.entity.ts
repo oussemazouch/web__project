@@ -15,4 +15,5 @@ export class Order extends baseEntity {
 
     @Column({ default: false })
     isPaid: boolean;
+
 }

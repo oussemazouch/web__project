@@ -22,9 +22,8 @@ export class UserService extends CrudService<User> {
   ) {
     super(userRepository);
   }
-  async findByEmail(email:string)
-  {
-    return await this.userRepository.findOneBy({email:email});
+  async findByEmail(email: string) {
+    return await this.userRepository.findOneBy({ email: email });
   }
 
   async register(userData: CreateUserDto) {
@@ -58,7 +57,7 @@ export class UserService extends CrudService<User> {
       const payload = {
         email: user.email,
         name: user.name,
-        role:user.role
+        role: user.role,
       };
 
       const token = this.jwtService.sign(payload);
@@ -71,6 +70,6 @@ export class UserService extends CrudService<User> {
     }
   }
   token_authorization_testing() {
-    return { message: 'token authorizeation implemnted coorectly' };
+    return { message: 'token authorization implemented correctly' };
   }
 }

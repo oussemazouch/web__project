@@ -1,7 +1,11 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { HasIdInterface } from './hasId.interface';
 import { DeepPartial, Repository } from 'typeorm';
-import { IPaginationOptions, Pagination, paginate } from 'nestjs-typeorm-paginate';
+import {
+  IPaginationOptions,
+  Pagination,
+  paginate,
+} from 'nestjs-typeorm-paginate';
 @Injectable()
 export class CrudService<T extends HasIdInterface> {
   constructor(private repository: Repository<T>) {}
@@ -14,6 +18,9 @@ export class CrudService<T extends HasIdInterface> {
 
   findAll() {
     return this.repository.find();
+  }
+  findByIds(TIds: number[]) {
+      return this.repository.findByIds(TIds);
   }
 
   findOne(id) {
