@@ -24,7 +24,9 @@ export class RolesGuard implements CanActivate {
 
     const req = context.switchToHttp().getRequest();
     //extract a header called authroization that will be like "Bearer eazsqduiaj" split(" ").pop() will return the jwt token after the Bearer word
-    const token =req.headers['authorization'].split(" ").pop();
+    if(req.headers['authorization'])
+    {
+      const token =req.headers['authorization'].split(" ").pop();
     try{
       const decodedToken=verify(token,process.env.SECRET);
       if(decodedToken["role"])
@@ -39,6 +41,7 @@ export class RolesGuard implements CanActivate {
     }catch(e)
     {
       throw new UnauthorizedException()
+    }
     }
     
     

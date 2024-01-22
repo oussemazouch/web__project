@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseIntPipe, Put, Query } from '@nestjs/common';
 import { ProductService } from './product.service';
 import { CreateProductDto } from './dto/create-product.dto';
 import { UpdateProductDto } from './dto/update-product.dto';
@@ -10,8 +10,9 @@ import { Pagination } from 'nestjs-typeorm-paginate';
 export class ProductController {
   constructor(private readonly productService: ProductService) {}
 
+  
   @Get('list')
-  async getProductsByPage(@Body() pageData: Page): Promise<Pagination<Product>>
+  async getProductsByPage(@Query() pageData: Page): Promise<Pagination<Product>>
   {
     return this.productService.paginate({
       page:pageData.page,
