@@ -51,7 +51,7 @@ export class UserService extends CrudService<User> {
       .createQueryBuilder('user')
       .where('user.email= :email', { email })
       .getOne();
-    if (!user) throw new NotFoundException('email or password incorrect ');
+    if (!user) throw new NotFoundException('Email or Password incorrect. Please Try again.');
     const hashedPassword = await bcrypt.hash(password, user.salt);
     if (hashedPassword === user.password) {
       const payload = {
