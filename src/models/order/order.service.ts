@@ -9,33 +9,27 @@ import { UserService } from '../user/user.service';
 
 @Injectable()
 export class OrderService extends CrudService<Order> {
-  constructor(@InjectRepository(Order) private orderRepository:Repository<Order>,
-  private userService:UserService)
-  {
+  constructor(
+    @InjectRepository(Order) private orderRepository: Repository<Order>,
+    private userService: UserService,
+  ) {
     super(orderRepository);
   }
-  
+
   async createOrder(email: string, createOrderDto: CreateOrderDto) {
     const user = await this.userService.findByEmail(email);
-    if(!user)
-    throw new NotFoundException()
-    else
-      {
-             const order = {user,...createOrderDto};
-             this.create(order);
-              
-      }
+    if (!user) throw new NotFoundException();
+    else {
+      const order = { user, ...createOrderDto };
+      this.create(order);
+    }
   }
 
-
-  async findOrdersByUser(email:string)
-  {
-            
-        return await this.orderRepository.createQueryBuilder('order').
-        leftJoinAndSelect('order.user', 'user') 
-        .where('user.email = :email', { email })
-       .getMany();;
- 
+  async findOrdersByUser(email: string) {
+    return await this.orderRepository
+      .createQueryBuilder('order')
+      .leftJoinAndSelect('order.user', 'user')
+      .where('user.email = :email', { email })
+      .getMany();
   }
- 
 }
