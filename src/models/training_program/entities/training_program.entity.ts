@@ -8,7 +8,7 @@ import {
 import { Exercice } from '../../exercice/entities/exercice.entity';
 
 @Entity({
-  name: 'TrainingProgram',
+  name: 'trainingprogram',
 })
 export class TrainingProgram {
   @PrimaryGeneratedColumn()
@@ -19,16 +19,16 @@ export class TrainingProgram {
 
   @ManyToMany(() => Exercice)
   @JoinTable({
-    name: 'traininProgramExercices',
+    name: 'traininprogramexercices',
     joinColumn: {
-      name: 'trainingProgramId',
+      name: 'trainingprogramid',
       referencedColumnName: 'id',
-      foreignKeyConstraintName: 'trainingPogram_Exercice_trainingProgramId',
+      foreignKeyConstraintName: 'trainingpogram_exercice_trainingprogramid',
     },
     inverseJoinColumn: {
-      name: 'ExerciceId',
+      name: 'exerciceid',
       referencedColumnName: 'id',
-      foreignKeyConstraintName: 'Exercice_trainingProgram-ExerciceId',
+      foreignKeyConstraintName: 'exercice_trainingprogram-exerciceid',
     },
   })
   exercices: Exercice[];

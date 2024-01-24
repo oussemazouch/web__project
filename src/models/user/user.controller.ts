@@ -11,6 +11,7 @@ import {
   UploadedFile,
   Request,
   Res,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -27,6 +28,8 @@ import path = require('path');
 import {v4 as uuidv4} from 'uuid';
 import { User } from './entities/user.entity';
 import { join } from 'path';
+import { verify } from "jsonwebtoken";
+
 
 //variable for the storage of file uploaded
 export const storage = {
@@ -105,17 +108,25 @@ export class UserController {
     return this.userService.remove(+id);
   }
 
-  // upload photo to user
-  @UseGuards(JwtAuthGuard)
+  
   @Post('upload')
   @UseInterceptors(FileInterceptor('file',storage))
-  uploadFile(@UploadedFile() file,@Request() req):Observable<Object> {
-    const user : User = req.user;
-
+  async uploadFile(@UploadedFile() file,@Request() req){
+    console.log(file);
+    
+    if(req.headers['authorization'])
+    {
+      const token =req.headers['authorization'].split(" ").pop();
+      const decodedToken=verify(token,process.env.SECRET);
+      const user =  await this.userService.findByEmail(decodedToken['email']);
     return from(this.userService.update(user.id,{image:file.filename})).pipe(
       tap((user:User)=>console.log(user)),
       map((user:User)=>({image:user.image}))
-    )
+    )}
+    else
+    {
+      return new UnauthorizedException();
+    }
   }
 
   @Get('profile-image/:imagename')
