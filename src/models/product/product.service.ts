@@ -11,5 +11,5 @@ export class ProductService extends CrudService<Product> {
   constructor(@InjectRepository(Product) private readonly productRepository: Repository<Product>) {
     super(productRepository);
   }
-  
+
 }

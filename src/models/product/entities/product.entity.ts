@@ -1,6 +1,7 @@
-import {Entity , Column, PrimaryGeneratedColumn} from 'typeorm';
+import {Entity , Column, PrimaryGeneratedColumn, ManyToMany, OneToMany} from 'typeorm';
 import { ProductType } from '../enums/product-type.enum';
 import { baseEntity } from 'src/common/base.entity';
+import { Order } from 'src/models/order/entities/order.entity';
 
 
 
@@ -25,6 +26,11 @@ export class Product extends baseEntity{
 
     @Column({type: 'enum', enum: ProductType})
     productType: ProductType
+    @ManyToMany(
+        () => Order, 'products'
+    )
+    orders:Order;
+    
     
 }
 export { ProductType };

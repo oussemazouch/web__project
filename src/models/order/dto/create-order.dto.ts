@@ -1,4 +1,8 @@
-import { IsNotEmpty, IsNumber, IsPositive } from "class-validator";
+import { Type } from "class-transformer";
+import { ArrayNotEmpty, IsArray, IsNotEmpty, IsNumber, IsPositive, ValidateNested } from "class-validator";
+import { CreateProductDto } from "src/models/product/dto/create-product.dto";
+
+
 
 export class CreateOrderDto {
     @IsNotEmpty()
@@ -8,4 +12,7 @@ export class CreateOrderDto {
 
     
     isPaid: boolean;
+    @IsArray()
+    @ArrayNotEmpty()
+    products?: number[];
 }
