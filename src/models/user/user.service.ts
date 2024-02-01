@@ -7,11 +7,13 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { CrudService } from 'src/common/crud.service';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { DeepPartial, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 
 import { JwtService } from '@nestjs/jwt';
 import { LoginCredentialsDto } from './dto/login-credentials.dto';
+import { Role } from 'src/common/role.enum';
+import { CoachService } from '../coach/coach.service';
 
 @Injectable()
 export class UserService extends CrudService<User> {
@@ -19,6 +21,7 @@ export class UserService extends CrudService<User> {
     @InjectRepository(User)
     private userRepository: Repository<User>,
     private jwtService: JwtService,
+    private coachService: CoachService
   ) {
     super(userRepository);
   }
@@ -27,6 +30,7 @@ export class UserService extends CrudService<User> {
   }
 
   async register(userData: CreateUserDto) {
+    userData.role=Role.USER;
     const user = this.userRepository.create({
       ...userData,
     });
@@ -51,7 +55,33 @@ export class UserService extends CrudService<User> {
       .createQueryBuilder('user')
       .where('user.email= :email', { email })
       .getOne();
-    if (!user) throw new NotFoundException('Email or Password incorrect. Please Try again.');
+      
+    if (!user)
+    {
+      const coach = await this.coachService.findByEmail(email);
+      console.log(coach);
+      
+      if(!coach)
+      throw new NotFoundException('Email or Password incorrect. Please Try again.');
+    else {
+      const hashedPassword = await bcrypt.hash(password, coach.salt);
+    if (hashedPassword === coach.password) {
+      const payload = {
+        email: coach.email,
+        name: coach.name,
+        role: coach.role,
+      };
+
+      const token = this.jwtService.sign(payload);
+      return {
+        access_token: token,
+        message: 'successfully logged !',
+      };
+    } else {
+      throw new NotFoundException('email or password incorrect ');
+    }
+    }
+    } 
     const hashedPassword = await bcrypt.hash(password, user.salt);
     if (hashedPassword === user.password) {
       const payload = {
@@ -71,5 +101,9 @@ export class UserService extends CrudService<User> {
   }
   token_authorization_testing() {
     return { message: 'token authorization implemented correctly' };
+  }
+  createUser(user: CreateUserDto): Promise<User> {
+    user.role=Role.ADMIN;
+    return this.create(user);
   }
 }

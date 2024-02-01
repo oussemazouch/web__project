@@ -1,4 +1,5 @@
 import { IsEmail, IsNotEmpty, IsNumber, Max, Min } from "class-validator";
+import { Role } from "src/common/role.enum";
 
 export class CreateUserDto {
 
@@ -24,5 +25,6 @@ export class CreateUserDto {
     @IsNumber()
     @Min(0)
     solde:number;
+    role:Role;
 
 }

@@ -3,8 +3,6 @@ import { CreateUserDto } from '../../user/dto/create-user.dto';
 
 export class CreateCoachDto extends CreateUserDto {
   @IsNotEmpty()
-  ProgramPrice: number;
-
-  @IsNotEmpty()
+  programPrice: number;
   description: string;
 }

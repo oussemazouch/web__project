@@ -8,6 +8,7 @@ import {JwtModule, JwtService} from '@nestjs/jwt';
 import * as dotenv from 'dotenv';
 import * as process from 'process';
 import {JwtStrategy} from "./authetification/passport_strategy/jwt.strategy";
+import { CoachModule } from '../coach/coach.module';
 dotenv.config();
 @Module({
   controllers: [UserController],
@@ -23,6 +24,7 @@ dotenv.config();
         expiresIn: 3600,
       },
     }),
+    CoachModule
   ],
   exports:[UserService]
 })

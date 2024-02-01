@@ -36,13 +36,5 @@ export class User extends baseEntity {
   @OneToMany(()=>Order,'user')
   orders:Order[];
 
-  @BeforeInsert()
-  setDefaultRole() {
-    //for testing created users are set to automatically admin
-    if (!this.role) {
-      this.role = Role.ADMIN;
-      // this.role = Role.USER;
-    }
-  }
 
 }
