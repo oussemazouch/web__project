@@ -11,7 +11,7 @@ import {
   UploadedFile,
   Request,
   Res,
-  UnauthorizedException,
+  UnauthorizedException, Query,
 } from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
@@ -29,6 +29,8 @@ import {v4 as uuidv4} from 'uuid';
 import { User } from './entities/user.entity';
 import { join } from 'path';
 import { verify } from "jsonwebtoken";
+import {Page} from "../../common/dtos/page.dto";
+import {Pagination} from "nestjs-typeorm-paginate";
 
 
 //variable for the storage of file uploaded
@@ -51,11 +53,11 @@ export const storage = {
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
-  // @UseGuards(RolesGuard)
-  // @Roles(Role.ADMIN)
+  @UseGuards(RolesGuard)
+  @Roles(Role.ADMIN)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.createUser(createUserDto);
+    return this.userService.create(createUserDto);
   }
   
   @Post('register')
@@ -68,12 +70,21 @@ export class UserController {
     return this.userService.login(credentials);
   }
 
-  @UseGuards(JwtAuthGuard,RolesGuard)
-  @Roles(Role.ADMIN)
-  @Get()
+  // @UseGuards(JwtAuthGuard,RolesGuard)
+  // @Roles(Role.ADMIN)
+  @Get('')
   findAll() {
     return this.userService.findAll();
   }
+ @Get('list')
+ async getUsersByPage(@Query()PageData:Page):Promise<Pagination<User>>
+ {
+    return this.userService.paginate({
+      page:PageData.page,
+      limit:PageData.limit
+    });
+ }
+
   // @Get('TestingToken')
   // @UseGuards(JwtAuthGuard)
   // test() {
@@ -94,15 +105,15 @@ export class UserController {
     return this.userService.findByEmail(email);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN, Role.USER)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN)
   @Patch(':id')
   update(@Param('id') id: string, @Body() updateUserDto: UpdateUserDto) {
     return this.userService.update(+id, updateUserDto);
   }
 
-  @UseGuards(RolesGuard)
-  @Roles(Role.ADMIN)
+  // @UseGuards(RolesGuard)
+  // @Roles(Role.ADMIN)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.userService.remove(+id);
