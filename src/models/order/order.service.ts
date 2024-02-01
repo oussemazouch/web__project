@@ -38,6 +38,15 @@ export class OrderService extends CrudService<Order> {
     }
     
   }
+  async createOrderByAdmin( createOrderDto: CreateOrderDto) {
+    const user = await this.userService.findByEmail('oussama.zouch@insat.ucar.tn');
+    console.log(user);
+    if (!user) throw new NotFoundException();
+    else {
+      const order = { user, ...createOrderDto };
+      this.create(order);
+    }
+  }
 
   async findOrdersByUser(email: string) {
     return await this.orderRepository

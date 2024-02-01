@@ -31,6 +31,9 @@ export class User extends baseEntity {
   solde: number;
   @Column()
   salt: string;
+  @Column()
+  adress: string;
+
   @Column({type: 'enum',enum:Role})
   role:Role;
   @OneToMany(()=>Order,'user')
