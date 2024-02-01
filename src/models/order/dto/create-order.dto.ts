@@ -13,6 +13,5 @@ export class CreateOrderDto {
     
     isPaid: boolean;
     @IsArray()
-    @ArrayNotEmpty()
     products?: number[];
 }
